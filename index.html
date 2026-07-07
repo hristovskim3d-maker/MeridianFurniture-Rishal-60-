@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My AR Model Viewer</title>
+    <!-- This script loads Google's 3D viewer technology -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+    <style>
+        body { margin: 0; padding: 0; background-color: #f0f0f0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        model-viewer { width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+
+    <!-- Your Model Viewer Code -->
+    <model-viewer src="PTRCQT26QV5UJQ33.glb" ios-src="PTRCQT26QV5UJQ33.usdz" ar ar-modes="scene-viewer webxr quick-look" camera-controls tone-mapping="neutral" shadow-intensity="1" exposure="1" environment-image="legacy">
+        <div class="progress-bar hide" slot="progress-bar">
+            <div class="update-bar"></div>
+        </div>
+        <button slot="ar-button" id="ar-button" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; background: #000; color: #fff; border: none; border-radius: 8px; font-weight: bold;">
+            View in your space
+        </button>
+    </model-viewer>
+
+</body>
+</html>
