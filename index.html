@@ -1,96 +1,27 @@
-HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My AR Model Viewer - Gallery</title>
+    <title>My AR Model Viewer</title>
+    <!-- This script loads Google's 3D viewer technology -->
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
     <style>
-        body { margin: 0; padding: 0; background-color: #f0f0f0; font-family: sans-serif; }
-        
-        /* The container takes up the whole screen */
-        .viewer-container { position: relative; width: 100vw; height: 100vh; }
+        body { margin: 0; padding: 0; background-color: #f0f0f0; display: flex; justify-content: center; align-items: center; height: 100vh; }
         model-viewer { width: 100%; height: 100%; }
-
-        /* Style for the furniture selector UI */
-        .menu-container {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.85);
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            backdrop-filter: blur(5px);
-            z-index: 10;
-            max-width: 200px;
-        }
-
-        .menu-container h3 { margin: 0 0 10px 0; font-size: 16px; color: #333; }
-
-        .model-btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 8px;
-            background: #fff;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: left;
-            font-size: 14px;
-            transition: all 0.2s ease;
-        }
-
-        .model-btn:hover { background: #f0f0f0; }
-        
-        /* Highlights the currently selected item */
-        .model-btn.active {
-            background: #000;
-            color: #fff;
-            border-color: #000;
-        }
     </style>
 </head>
 <body>
 
-    <div class="viewer-container">
-        <div class="menu-container">
-            <h3>Select Furniture</h3>
-            <button class="model-btn active" data-src="Table-02.glb">Modern Table</button>
-            <button class="model-btn" data-src="Chair-05.glb">Comfy Chair</button>
-            <button class="model-btn" data-src="Sofa-Luxury.glb">Luxury Sofa</button>
+    <!-- Your Model Viewer Code -->
+    <model-viewer src="Table-02.glb" ar ar-modes="scene-viewer webxr quick-look" camera-controls tone-mapping="neutral" shadow-intensity="1" exposure="1" environment-image="legacy">
+        <div class="progress-bar hide" slot="progress-bar">
+            <div class="update-bar"></div>
         </div>
-
-        <model-viewer id="dimension-viewer" src="Table-02.glb" ar ar-modes="scene-viewer webxr quick-look" camera-controls tone-mapping="neutral" shadow-intensity="1" exposure="1" environment-image="legacy">
-            <div class="progress-bar hide" slot="progress-bar">
-                <div class="update-bar"></div>
-            </div>
-            <button slot="ar-button" id="ar-button" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; background: #000; color: #fff; border: none; border-radius: 8px; font-weight: bold; z-index: 10;">
-                View in your space
-            </button>
-        </model-viewer>
-    </div>
-
-    <script>
-        const viewer = document.getElementById('dimension-viewer');
-        const buttons = document.querySelectorAll('.model-btn');
-
-        buttons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                // 1. Get the model path from the clicked button's data-src attribute
-                const modelSrc = button.getAttribute('data-src');
-                
-                // 2. Change the src attribute of the model-viewer
-                viewer.setAttribute('src', modelSrc);
-
-                // 3. Update the active button styling
-                buttons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-            });
-        });
-    </script>
+        <button slot="ar-button" id="ar-button" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; background: #000; color: #fff; border: none; border-radius: 8px; font-weight: bold;">
+            View in your space
+        </button>
+    </model-viewer>
 
 </body>
 </html>
