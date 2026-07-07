@@ -23,7 +23,7 @@
         z-index: 0;
       }
 
-      /* Ensures the custom button is explicitly styled as a block and stays on top */
+      /* Ensures the custom button stays on top */
       #ar-button {
         display: flex;
         position: absolute;
@@ -39,9 +39,11 @@
         z-index: 999;
         width: auto;
         height: auto;
+        cursor: pointer;
       }
       #ar-button:disabled {
         opacity: 0.5;
+        cursor: not-allowed;
       }
     </style>
   </head>
@@ -51,7 +53,7 @@
       src="Table-02.glb"
       ios-src="Table-02.usdz"
       ar
-      ar-modes="quick-look scene-viewer webxr"
+      ar-modes="webxr scene-viewer quick-look"
       camera-controls
       tone-mapping="neutral"
       shadow-intensity="1"
@@ -62,19 +64,24 @@
         <div class="update-bar"></div>
       </div>
 
-      <button id="ar-button">View in your space</button>
+      <button id="ar-button" slot="ar-button">View in your space</button>
     </model-viewer>
 
     <script>
       const viewer = document.getElementById("model-viewer");
       const button = document.getElementById("ar-button");
 
-     viewer.addEventListener("load", () => {
+      // Check AR support safely across devices
+      const checkAR = () => {
         if (!viewer.canActivateAR) {
           button.disabled = true;
           button.textContent = "AR Not Supported";
         }
-      });
+      };
+
+      // Check on load, or immediately if the viewer is already loaded
+      viewer.addEventListener("load", checkAR);
+      if (viewer.loaded) checkAR();
     </script>
   </body>
 </html>
