@@ -23,7 +23,7 @@
         z-index: 0;
       }
 
-      /* Ensures the custom button stays on top */
+      /* Native or custom AR button styling */
       #ar-button {
         display: flex;
         position: absolute;
@@ -41,9 +41,10 @@
         height: auto;
         cursor: pointer;
       }
-      #ar-button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
+      
+      /* Google hides the button automatically if AR is unsupported */
+      .ar-button-hidden {
+        display: none !important;
       }
     </style>
   </head>
@@ -51,9 +52,10 @@
     <model-viewer
       id="model-viewer"
       src="Table-02.glb"
-      ios-src="Table-02.usdz"
+      ios-src="Table-01.usdz"
       ar
       ar-modes="webxr scene-viewer quick-look"
+      ar-placement="floor"
       camera-controls
       tone-mapping="neutral"
       shadow-intensity="1"
@@ -71,15 +73,25 @@
       const viewer = document.getElementById("model-viewer");
       const button = document.getElementById("ar-button");
 
-      // Check AR support safely across devices
+      // iOS Quick Look compatibility check
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
       const checkAR = () => {
-        if (!viewer.canActivateAR) {
+        // If it's iOS, model-viewer will natively handle the quick-look bypass.
+        // If it's Android/WebXR and can't activate AR, disable the button.
+        if (!isIOS && !viewer.canActivateAR) {
           button.disabled = true;
           button.textContent = "AR Not Supported";
         }
       };
 
-      // Check on load, or immediately if the viewer is already loaded
+      // Model-viewer fires 'ar-status' when initializing AR capabilities
+      viewer.addEventListener("ar-status", (event) => {
+        if (event.detail.status === "failed") {
+          console.error("AR failed to launch", event.detail);
+        }
+      });
+
       viewer.addEventListener("load", checkAR);
       if (viewer.loaded) checkAR();
     </script>
